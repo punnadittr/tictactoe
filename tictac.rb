@@ -1,17 +1,27 @@
 class Tic
-    @@top = {:left, :center, :right}
-    @@center = {:left => '4', :center => '5', :right => '6'}
-    @@bottom = {:left => '7', :center => '8', :right => '9'}
+
+    EMPTY_BOARD = (1..9).to_a
+    CONDITIONS = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
+
+    @@board = {'top' => {'left' => ' ', 'center' => ' ', 'right' => ' '},
+    'center' => {'left' => ' ', 'center' => ' ', 'right' => ' '},
+    'bottom' => {'left' => ' ', 'center' => ' ', 'right' => ' '}}
+
+    @@player1_choice = Array.new
+    @@player2_choice = Array.new
 
     def initialize
-        puts '#help > show all options'
-        puts 'To start, #start_game'
+        show_empty_board
+        start_game
     end
 
     public
     def start_game
-
+        @userturn
+        switch_turn
+        play_game
     end
+    
 
     def help
         puts '    #start_game  > start the game'
@@ -22,30 +32,85 @@ class Tic
     def show_score
 
     end
+
     def show_board
-        puts @@top.values.join(' | ')
+        puts @@board['top'].values.join(' | ')
         puts '---------'
-        puts @@center.values.join(' | ')
+        puts @@board['center'].values.join(' | ')
         puts '---------'
-        puts @@bottom.values.join(' | ')
+        puts @@board['bottom'].values.join(' | ')
+        puts
+        puts
     end    
 
     private 
-    def change_turn
 
+    def show_empty_board
+        puts 'Please enter your desired position as below'
+        puts EMPTY_BOARD[0..2].join(' | ')
+        puts '---------'
+        puts EMPTY_BOARD[3..5].join(' | ')
+        puts '---------'
+        puts EMPTY_BOARD[6..8].join(' | ')
     end
 
-    def input_position
-
+    def play_game
+        @userinput = gets.chomp
+        case @userinput
+        when '1'
+            @@board['top']['left'] = @userturn
+        when '2'
+            @@board['top']['center'] = @userturn
+        when '3'
+            @@board['top']['right'] = @userturn
+        when '4'
+            @@board['center']['left'] = @userturn
+        when '5'
+            @@board['center']['center'] = @userturn
+        when '6'
+            @@board['center']['right'] = @userturn
+        when '7'
+            @@board['bottom']['left'] = @userturn
+        when '8'
+            @@board['bottom']['center'] = @userturn
+        when '9'
+            @@board['bottom']['right'] = @userturn
+        else 
+            puts 'Invalid INPUT'
+        end
+        @@player1_choice.push(@userinput.to_i) if @userturn == 'X'
+        @@player2_choice.push(@userinput.to_i) if @userturn == 'O'
+        show_board
+        check_game_over
     end
 
+    def switch_turn
+        if @userturn == 'X'
+            @userturn = 'O'
+        else 
+            @userturn = 'X'
+        end
+    end
 
-    def show_baord_with_numbers
-
+    def check_game_over
+        if @@player1_choice.size >= 3
+            CONDITIONS.each_index do |index|
+                if (CONDITIONS[index] & @@player1_choice.sort) == CONDITIONS[index]
+                    puts 'GAME OVER, PLAYER 1 Wins!'
+                    reset
+                end
+            end
+        end
+    end
+    def reset
+        @@board = {'top' => {'left' => ' ', 'center' => ' ', 'right' => ' '},
+        'center' => {'left' => ' ', 'center' => ' ', 'right' => ' '},
+        'bottom' => {'left' => ' ', 'center' => ' ', 'right' => ' '}}
+        @@player1_choice = Array.new
+        @@player2_choice = Array.new
     end
 end
     
-
 
 
 =begin
