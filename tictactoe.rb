@@ -85,7 +85,7 @@ class TicTacToe
     puts "Play Again? (y/n)".center(35)
     continue = gets.chomp
     while continue != 'y' && continue != 'n'
-        continue = gets.chomp
+      continue = gets.chomp
     end
     if continue == 'y'
       show_board(@board)
