@@ -97,8 +97,8 @@ class TicTacToe
 
   def reset
     @board = Array.new(9,' ')
-    @player1_choice = Array.new
-    @player2_choice = Array.new
+    @player1_choice = []
+    @player2_choice = []
     @game_over = false
     continue?
   end
